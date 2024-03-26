@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Setting wifi for iot</title>
+</head>
+<body>
+    <h2>NHẬP THÔNG TIN WIFI</h2>
+    <form id="myForm">
+        <label for="sta_ssid">SSID:</label><br>
+        <input type="text" id="sta_ssid" name="sta_ssid"><br><br>
+
+        <label for="sta_password">PASSWORD:</label><br>
+        <input type="text" id="sta_password" name="sta_password"><br><br>
+
+        <button type="submit">Submit</button>
+    </form>
+
+    <script>
+        document.getElementById("myForm").addEventListener("submit", function(event) {
+            event.preventDefault(); // Ngăn chặn hành động mặc định của sự kiện submit
+            
+            // Tạo đối tượng JSON từ dữ liệu các ô nhập
+            var inputData = {
+                sta_ssid: document.getElementById("sta_ssid").value,
+                sta_password: document.getElementById("sta_password").value
+            };
+    
+            // Gửi yêu cầu POST đến server
+            fetch("http://192.168.4.1/post", {
+                method: "POST",
+                body: JSON.stringify(inputData)
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.text();
+            })
+            .then(data => {
+                console.log(data); // Xử lý phản hồi từ server
+            })
+            .catch(error => {
+                console.error('There was a problem with your fetch operation:', error);
+            });
+        });
+    </script>
+</body>
+</html>

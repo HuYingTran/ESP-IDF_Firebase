@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Send SSID and Password</title>
+</head>
+<body>
+    <h2>Send SSID and Password</h2>
+    <form id="wifiForm" action="http://192.168.4.1/get" method="GET">
+        <label for="ssid">SSID:</label><br>
+        <input type="text" id="ssid" name="sta_ssid"><br>
+        <label for="password">Password:</label><br>
+        <input type="password" id="password" name="sta_password"><br><br>
+        <input type="submit" value="Submit">
+    </form>
+</body>
+</html>

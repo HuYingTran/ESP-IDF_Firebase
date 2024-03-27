@@ -16,10 +16,12 @@
 #include <lwip/api.h>
 #include <lwip/netdb.h>
 
+#define STR_LENGTH 32
+
 typedef struct
 {
-    char *WIFI_SSID;
-    char *WIFI_PASSWORD;
+    char WIFI_SSID[STR_LENGTH];
+    char WIFI_PASSWORD[STR_LENGTH];
     bool wifi_sta_connected;
 } wifi_inf;
 

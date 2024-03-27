@@ -4,6 +4,7 @@
 #include "esp_system.h"
 #include "esp_log.h"
 #include "iot_var.h"
+#include "ctype.h"
 
 #define TAG "iot_wifi"
 
@@ -17,16 +18,16 @@ static void event_handler(void* arg, esp_event_base_t event_base,
     switch (event_id)
     {
     case WIFI_EVENT_STA_START:
-        printf("WiFi connecting ... \n");
+        ESP_LOGI(TAG,"WiFi connecting ...");
         break;
     case WIFI_EVENT_STA_CONNECTED:
-        ESP_LOGI(TAG,"Connect ssid:%s pass:%s",global.wifi_sta.WIFI_SSID,global.wifi_sta.WIFI_PASSWORD);
+        ESP_LOGI(TAG,"Connect ssid:%s pass:%s",global.wifi_sta.WIFI_SSID, global.wifi_sta.WIFI_PASSWORD);
         break;
     case WIFI_EVENT_STA_DISCONNECTED:
-        printf("WiFi lost connection ... \n");
+        ESP_LOGI(TAG,"WiFi lost connection");
         break;
     case IP_EVENT_STA_GOT_IP:
-        global.wifi_sta.wifi_sta_connected = 1;
+        global.wifi_sta.wifi_sta_connected = true;
         ESP_LOGI(TAG,"Connect ssid:%s pass:%s",global.wifi_sta.WIFI_SSID,global.wifi_sta.WIFI_PASSWORD);
         break;
     default:
@@ -61,6 +62,11 @@ void initialise_wifi(void)
 
 void iot_wifi_sta_init()
 {
+	if(!strcmp(global.wifi_sta.WIFI_SSID,"") || !strcmp(global.wifi_sta.WIFI_SSID,"")) {
+		ESP_LOGI(TAG,"SSID PASS NULL");
+		return;
+	}
+
     if(global.wifi_sta.wifi_sta_connected){
         global.wifi_sta.wifi_sta_connected = 0;
         esp_wifi_disconnect();
@@ -71,5 +77,4 @@ void iot_wifi_sta_init()
 
 	ESP_ERROR_CHECK( esp_wifi_set_config(ESP_IF_WIFI_STA, &wifi_config) );
     ESP_ERROR_CHECK( esp_wifi_connect());
-
 }

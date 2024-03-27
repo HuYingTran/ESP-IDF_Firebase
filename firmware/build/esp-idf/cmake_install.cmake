@@ -126,6 +126,7 @@ if(NOT CMAKE_INSTALL_LOCAL_ONLY)
   include("C:/Espressif/frameworks/dev/bangDienIot/firmware/build/esp-idf/iot_var/cmake_install.cmake")
   include("C:/Espressif/frameworks/dev/bangDienIot/firmware/build/esp-idf/iot_spiffs/cmake_install.cmake")
   include("C:/Espressif/frameworks/dev/bangDienIot/firmware/build/esp-idf/iot_http/cmake_install.cmake")
+  include("C:/Espressif/frameworks/dev/bangDienIot/firmware/build/esp-idf/iot_nvs/cmake_install.cmake")
   include("C:/Espressif/frameworks/dev/bangDienIot/firmware/build/esp-idf/iot_wifi/cmake_install.cmake")
 
 endif()

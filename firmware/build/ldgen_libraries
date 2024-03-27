@@ -75,4 +75,5 @@ C:/Espressif/frameworks/dev/bangDienIot/firmware/build/esp-idf/iot_gpio/libiot_g
 C:/Espressif/frameworks/dev/bangDienIot/firmware/build/esp-idf/iot_var/libiot_var.a
 C:/Espressif/frameworks/dev/bangDienIot/firmware/build/esp-idf/iot_spiffs/libiot_spiffs.a
 C:/Espressif/frameworks/dev/bangDienIot/firmware/build/esp-idf/iot_http/libiot_http.a
+C:/Espressif/frameworks/dev/bangDienIot/firmware/build/esp-idf/iot_nvs/libiot_nvs.a
 C:/Espressif/frameworks/dev/bangDienIot/firmware/build/esp-idf/iot_wifi/libiot_wifi.a

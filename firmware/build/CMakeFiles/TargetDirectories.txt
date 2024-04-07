@@ -687,13 +687,6 @@ C:/Espressif/frameworks/dev/bangDienIot/firmware/build/esp-idf/main/CMakeFiles/l
 C:/Espressif/frameworks/dev/bangDienIot/firmware/build/esp-idf/main/CMakeFiles/install.dir
 C:/Espressif/frameworks/dev/bangDienIot/firmware/build/esp-idf/main/CMakeFiles/install/local.dir
 C:/Espressif/frameworks/dev/bangDienIot/firmware/build/esp-idf/main/CMakeFiles/install/strip.dir
-C:/Espressif/frameworks/dev/bangDienIot/firmware/build/esp-idf/iot_gpio/CMakeFiles/__idf_iot_gpio.dir
-C:/Espressif/frameworks/dev/bangDienIot/firmware/build/esp-idf/iot_gpio/CMakeFiles/edit_cache.dir
-C:/Espressif/frameworks/dev/bangDienIot/firmware/build/esp-idf/iot_gpio/CMakeFiles/rebuild_cache.dir
-C:/Espressif/frameworks/dev/bangDienIot/firmware/build/esp-idf/iot_gpio/CMakeFiles/list_install_components.dir
-C:/Espressif/frameworks/dev/bangDienIot/firmware/build/esp-idf/iot_gpio/CMakeFiles/install.dir
-C:/Espressif/frameworks/dev/bangDienIot/firmware/build/esp-idf/iot_gpio/CMakeFiles/install/local.dir
-C:/Espressif/frameworks/dev/bangDienIot/firmware/build/esp-idf/iot_gpio/CMakeFiles/install/strip.dir
 C:/Espressif/frameworks/dev/bangDienIot/firmware/build/esp-idf/iot_var/CMakeFiles/__idf_iot_var.dir
 C:/Espressif/frameworks/dev/bangDienIot/firmware/build/esp-idf/iot_var/CMakeFiles/edit_cache.dir
 C:/Espressif/frameworks/dev/bangDienIot/firmware/build/esp-idf/iot_var/CMakeFiles/rebuild_cache.dir
@@ -701,6 +694,13 @@ C:/Espressif/frameworks/dev/bangDienIot/firmware/build/esp-idf/iot_var/CMakeFile
 C:/Espressif/frameworks/dev/bangDienIot/firmware/build/esp-idf/iot_var/CMakeFiles/install.dir
 C:/Espressif/frameworks/dev/bangDienIot/firmware/build/esp-idf/iot_var/CMakeFiles/install/local.dir
 C:/Espressif/frameworks/dev/bangDienIot/firmware/build/esp-idf/iot_var/CMakeFiles/install/strip.dir
+C:/Espressif/frameworks/dev/bangDienIot/firmware/build/esp-idf/iot_gpio/CMakeFiles/__idf_iot_gpio.dir
+C:/Espressif/frameworks/dev/bangDienIot/firmware/build/esp-idf/iot_gpio/CMakeFiles/edit_cache.dir
+C:/Espressif/frameworks/dev/bangDienIot/firmware/build/esp-idf/iot_gpio/CMakeFiles/rebuild_cache.dir
+C:/Espressif/frameworks/dev/bangDienIot/firmware/build/esp-idf/iot_gpio/CMakeFiles/list_install_components.dir
+C:/Espressif/frameworks/dev/bangDienIot/firmware/build/esp-idf/iot_gpio/CMakeFiles/install.dir
+C:/Espressif/frameworks/dev/bangDienIot/firmware/build/esp-idf/iot_gpio/CMakeFiles/install/local.dir
+C:/Espressif/frameworks/dev/bangDienIot/firmware/build/esp-idf/iot_gpio/CMakeFiles/install/strip.dir
 C:/Espressif/frameworks/dev/bangDienIot/firmware/build/esp-idf/iot_spiffs/CMakeFiles/__idf_iot_spiffs.dir
 C:/Espressif/frameworks/dev/bangDienIot/firmware/build/esp-idf/iot_spiffs/CMakeFiles/edit_cache.dir
 C:/Espressif/frameworks/dev/bangDienIot/firmware/build/esp-idf/iot_spiffs/CMakeFiles/rebuild_cache.dir

@@ -16,6 +16,8 @@
 #include <lwip/api.h>
 #include <lwip/netdb.h>
 
+#include "iot_gpio.h"
+
 #define STR_LENGTH 32
 
 typedef struct
@@ -25,12 +27,13 @@ typedef struct
     bool wifi_sta_connected;
 } wifi_inf;
 
-
 typedef struct
 {
     wifi_inf wifi_sta;
     wifi_inf wifi_ap;
     bool wifi_change;
+    iot_gpio_t IOT_GPIO_RELAY[4];
+    int relay_status[4];
 } global_t;
 
 global_t global;

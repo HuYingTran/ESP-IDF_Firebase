@@ -1,1 +1,1 @@
-void iot_loop();
+void iot_wifi_loop();

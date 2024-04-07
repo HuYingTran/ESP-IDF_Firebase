@@ -71,8 +71,8 @@ C:/Espressif/frameworks/dev/bangDienIot/firmware/build/esp-idf/spiffs/libspiffs.
 C:/Espressif/frameworks/dev/bangDienIot/firmware/build/esp-idf/ulp/libulp.a
 C:/Espressif/frameworks/dev/bangDienIot/firmware/build/esp-idf/wifi_provisioning/libwifi_provisioning.a
 C:/Espressif/frameworks/dev/bangDienIot/firmware/build/esp-idf/main/libmain.a
-C:/Espressif/frameworks/dev/bangDienIot/firmware/build/esp-idf/iot_gpio/libiot_gpio.a
 C:/Espressif/frameworks/dev/bangDienIot/firmware/build/esp-idf/iot_var/libiot_var.a
+C:/Espressif/frameworks/dev/bangDienIot/firmware/build/esp-idf/iot_gpio/libiot_gpio.a
 C:/Espressif/frameworks/dev/bangDienIot/firmware/build/esp-idf/iot_spiffs/libiot_spiffs.a
 C:/Espressif/frameworks/dev/bangDienIot/firmware/build/esp-idf/iot_http/libiot_http.a
 C:/Espressif/frameworks/dev/bangDienIot/firmware/build/esp-idf/iot_nvs/libiot_nvs.a

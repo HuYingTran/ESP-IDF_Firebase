@@ -7,12 +7,11 @@ void wifi_loop(){
     while (1)
     {
         if(global.wifi_sta.wifi_sta_connected){
-            gpio_set_direction(IOT_GPIO_WIFI, IOT_HIGH);
+            gpio_set_level(IOT_GPIO_WIFI, IOT_HIGH);
             iot_nvs_write(NVS_KEY_STA_SSID, global.wifi_sta.WIFI_SSID);
             iot_nvs_write(NVS_KEY_STA_PASS, global.wifi_sta.WIFI_PASSWORD);
         }
         if(global.wifi_change){
-            printf("\nthay đổi ket noi lai");
             global.wifi_change = false;
             iot_wifi_sta_init();
         }

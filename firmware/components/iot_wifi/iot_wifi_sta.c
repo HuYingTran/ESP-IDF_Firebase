@@ -21,14 +21,15 @@ static void event_handler(void* arg, esp_event_base_t event_base,
         ESP_LOGI(TAG,"WiFi connecting ...");
         break;
     case WIFI_EVENT_STA_CONNECTED:
-        ESP_LOGI(TAG,"Connect ssid:%s pass:%s",global.wifi_sta.WIFI_SSID, global.wifi_sta.WIFI_PASSWORD);
+		global.wifi_sta.wifi_sta_connected = true;
+        ESP_LOGI(TAG,"Connected ssid:%s pass:%s",global.wifi_sta.WIFI_SSID, global.wifi_sta.WIFI_PASSWORD);
         break;
     case WIFI_EVENT_STA_DISCONNECTED:
         ESP_LOGI(TAG,"WiFi lost connection");
         break;
     case IP_EVENT_STA_GOT_IP:
         global.wifi_sta.wifi_sta_connected = true;
-        ESP_LOGI(TAG,"Connect ssid:%s pass:%s",global.wifi_sta.WIFI_SSID,global.wifi_sta.WIFI_PASSWORD);
+        ESP_LOGI(TAG,"Got IP ssid:%s pass:%s",global.wifi_sta.WIFI_SSID,global.wifi_sta.WIFI_PASSWORD);
         break;
     default:
         break;

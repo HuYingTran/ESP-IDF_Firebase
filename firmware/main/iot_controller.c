@@ -4,6 +4,8 @@
 #include "iot_gpio.h"
 #include "iot_spiffs.h"
 #include "iot_nvs.h"
+#include "iot_controller_http.h"
+#include "iot_controller_wifi.h"
 
 void iot_wifi_default_inf(){
     strcpy(global.wifi_ap.WIFI_SSID, "Iot Huynh");
@@ -31,4 +33,10 @@ void iot_init()
     global.wifi_sta.wifi_sta_connected = false;
     iot_wifi_default_inf();
     iot_http_server_init();
+}
+
+void iot_loop()
+{
+    iot_wifi_loop();
+    // iot_http_loop();
 }

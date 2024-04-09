@@ -3,11 +3,12 @@
 #include <esp_err.h>
 #include "string.h"
 #include "cJson.h"
+#include "iot_nvs.h"
 #include "iot_var.h"
 #include "iot_spiffs.h"
 
 #define TAG "esp32_server_http"
-
+#define BUFFER_SIZE 1024
 #define MIN(a,b) ((a<b)?a:b)
 
 esp_err_t post_handler(httpd_req_t *req)
@@ -46,9 +47,51 @@ esp_err_t post_handler(httpd_req_t *req)
     strcpy(global.wifi_sta.WIFI_PASSWORD, password);
 
     global.wifi_change = true;
+    global.wifi_sta.inited = false;
+    while(!global.wifi_sta.inited){
+        vTaskDelay(pdMS_TO_TICKS(10));
+    }
 
-    const char resp[] = "<h1>DONE</h1>";
-    httpd_resp_send(req, resp, HTTPD_RESP_USE_STRLEN);
+    FILE *f = fopen("/spiffs/settingSSID_PASS.html", "r");
+    if (f == NULL) {
+        printf("Failed to open file for reading\n");
+        return ESP_FAIL;
+    }
+    // Tạo một vùng nhớ đệm để lưu trữ dữ liệu từ tệp
+    char buffer[BUFFER_SIZE];
+    size_t bytes_read;
+    // Đọc dữ liệu từ tệp và lưu vào vùng nhớ đệm
+    bytes_read = fread(buffer, 1, BUFFER_SIZE, f);
+    fclose(f);
+
+    if(global.wifi_sta.wifi_sta_connected){
+        strcat(buffer,"<h3>WIFI Connected.</h3>");
+        ESP_LOGI(TAG, "rep WIFI connected");
+        iot_nvs_write(NVS_KEY_STA_SSID, global.wifi_sta.WIFI_SSID);
+        iot_nvs_write(NVS_KEY_STA_PASS, global.wifi_sta.WIFI_PASSWORD);
+    }else{
+        strcat(buffer,"<h3>WIFI Faile. Please re-enter your information</h3>");
+        ESP_LOGI(TAG, "rep WIFI falie");
+    }
+    httpd_resp_send(req, buffer, HTTPD_RESP_USE_STRLEN);
+    return ESP_OK;
+}
+
+esp_err_t get_handler(httpd_req_t *req)
+{
+    FILE *f = fopen("/spiffs/settingSSID_PASS.html", "r");
+    if (f == NULL) {
+        printf("Failed to open file for reading\n");
+        return ESP_FAIL;
+    }
+    // Tạo một vùng nhớ đệm để lưu trữ dữ liệu từ tệp
+    char buffer[BUFFER_SIZE];
+    size_t bytes_read;
+    // Đọc dữ liệu từ tệp và lưu vào vùng nhớ đệm
+    bytes_read = fread(buffer, 1, BUFFER_SIZE, f);
+    fclose(f);
+    buffer[bytes_read] = '\0';
+    httpd_resp_send(req, buffer, HTTPD_RESP_USE_STRLEN);
     return ESP_OK;
 }
 
@@ -60,7 +103,6 @@ httpd_handle_t iot_http_server_init()
     {
         // Do something
     }
-
     httpd_uri_t get_uri = {
         .uri = "/",
         .method = HTTP_GET,

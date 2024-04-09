@@ -1,6 +1,10 @@
 {
     "files.associations": {
+<<<<<<< HEAD
         "iot_nvs.h": "c",
         "string_view": "c"
+=======
+        "iot_nvs.h": "c"
+>>>>>>> da597da (creat_nvs_wifi_sta)
     }
 }

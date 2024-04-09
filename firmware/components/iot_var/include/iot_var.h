@@ -15,7 +15,6 @@
 #include <lwip/sys.h>
 #include <lwip/api.h>
 #include <lwip/netdb.h>
-
 #include "iot_gpio.h"
 
 #define STR_LENGTH 32
@@ -25,6 +24,7 @@ typedef struct
     char WIFI_SSID[STR_LENGTH];
     char WIFI_PASSWORD[STR_LENGTH];
     bool wifi_sta_connected;
+    bool inited;
 } wifi_inf;
 
 typedef struct

@@ -6,3 +6,4 @@
 void iot_nvs_init();
 esp_err_t iot_nvs_write(const char *key, const char *value);
 esp_err_t iot_nvs_read(const char *key, char *buf, size_t length);
+void read_file_html();

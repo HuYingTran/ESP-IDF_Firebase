@@ -20,7 +20,14 @@ static void iot_control_relay(){
 }
 
 void iot_control_gpio()
-{
-    iot_wifi_control_led();
-    iot_control_relay();
+{   while(1)
+    {
+        iot_wifi_control_led();
+        iot_control_relay();
+        vTaskDelay(1);
+    }
+}
+
+void iot_gpio_loop(){
+    xTaskCreatePinnedToCore(iot_control_gpio, "iot_control_gpio", 4096, NULL, 19, NULL, 1);
 }

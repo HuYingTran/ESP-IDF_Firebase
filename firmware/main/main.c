@@ -21,3 +21,5 @@ void app_main()
     iot_loop();
 	printf("\nend");
 }
+
+// HTTP Client - FreeRTOS ESP IDF - GET

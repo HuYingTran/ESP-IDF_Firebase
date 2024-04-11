@@ -42,4 +42,7 @@ void iot_loop()
     iot_wifi_loop();
     iot_http_loop();
     iot_gpio_loop();
+    // vTaskDelay(10*pdMS_TO_TICKS(1000));
+    // printf("\nhuy\n");
+    // test();
 }

@@ -8,10 +8,10 @@ typedef enum {
 
 typedef enum {
     IOT_GPIO_WIFI = GPIO_NUM_2,
-    IOT_GPIO_RELAY_1 = GPIO_NUM_11,
-    IOT_GPIO_RELAY_2 = GPIO_NUM_12,
-    IOT_GPIO_RELAY_3 = GPIO_NUM_13,
-    IOT_GPIO_RELAY_4 = GPIO_NUM_14,
+    IOT_GPIO_RELAY_1 = GPIO_NUM_14,
+    IOT_GPIO_RELAY_2 = GPIO_NUM_27,
+    IOT_GPIO_RELAY_3 = GPIO_NUM_26,
+    IOT_GPIO_RELAY_4 = GPIO_NUM_25,
 } iot_gpio_t;
 
 void iot_gpio_setting();

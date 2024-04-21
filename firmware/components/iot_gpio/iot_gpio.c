@@ -12,7 +12,8 @@ void iot_gpio_setting()
     // Setup gpio relay mode output
     for(int i = 0; i<4; i++)
     {
+        gpio_pad_select_gpio(global.IOT_GPIO_RELAY[i]);
         gpio_set_direction(global.IOT_GPIO_RELAY[i], GPIO_MODE_OUTPUT);
-        gpio_set_level(global.IOT_GPIO_RELAY[i],IOT_LOW);
+        gpio_set_level(global.IOT_GPIO_RELAY[i],IOT_HIGH);
     }
 }

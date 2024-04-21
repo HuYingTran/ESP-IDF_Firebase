@@ -26,6 +26,7 @@ static void iot_load_setting(){
 void iot_init()
 {
     iot_nvs_init();
+    iot_var_init();
     iot_gpio_setting();
     iot_setup_spiffs();
 

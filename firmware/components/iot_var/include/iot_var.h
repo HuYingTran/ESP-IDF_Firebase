@@ -37,3 +37,5 @@ typedef struct
 } global_t;
 
 global_t global;
+
+void iot_var_init();

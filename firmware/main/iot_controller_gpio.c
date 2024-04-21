@@ -11,7 +11,7 @@ static void iot_wifi_control_led(){
 
 static void iot_control_relay(){
     for(int i=0; i<4; i++){
-        if(global.relay_status[i]){
+        if(global.relay_status[i] == 0){
             gpio_set_level(global.IOT_GPIO_RELAY[i],IOT_HIGH);
         }else{
             gpio_set_level(global.IOT_GPIO_RELAY[i],IOT_LOW);

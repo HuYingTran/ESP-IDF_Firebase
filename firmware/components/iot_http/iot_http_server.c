@@ -8,7 +8,7 @@
 #include "iot_spiffs.h"
 
 #define TAG "esp32_server_http"
-#define BUFFER_SIZE 1024
+#define BUFFER_SIZE 1536
 #define MIN(a,b) ((a<b)?a:b)
 
 esp_err_t post_handler(httpd_req_t *req)
@@ -77,8 +77,63 @@ esp_err_t post_handler(httpd_req_t *req)
     return ESP_OK;
 }
 
-esp_err_t get_handler(httpd_req_t *req)
+esp_err_t post_control_handler(httpd_req_t *req)
 {
+    char buf[100];
+    int buf_len = sizeof(buf);
+    int ret;
+
+    /* Read URL query string length and allocate memory for length + 1,
+     * extra byte for null termination */
+    if (httpd_req_get_url_query_len(req) > 0) {
+        /* Get the length of the URL query string */
+        if ((ret = httpd_req_get_url_query_str(req, buf, buf_len)) == ESP_OK) {
+            /* URL query string is stored in buf, so now you can extract
+             * the parameter you need. In this case, we'll just print it */
+            ESP_LOGI(TAG, "Found URL query => %s", buf);
+            /* Respond with the value passed to the 'button' parameter */
+            switch (buf[7])
+            {
+                case '1':
+                    global.relay_status[0] = global.relay_status[0] == 0 ? 1:0;
+                    break;
+                case '2':
+                    global.relay_status[1] = global.relay_status[1] == 0 ? 1:0;
+                    break;
+                case '3':
+                    global.relay_status[2] = global.relay_status[2] == 0 ? 1:0;
+                    break;
+                case '4':
+                    global.relay_status[3] = global.relay_status[3] == 0 ? 1:0;
+                    break;
+                default:
+                    break;
+            } 
+        } else {
+            ESP_LOGE(TAG, "Buffer too small, increase buf_len to fit query string");
+        }
+    } else {
+        ESP_LOGE(TAG, "No URL query string");
+    }
+
+    FILE *f = fopen("/spiffs/control.html", "r");
+    if (f == NULL) {
+        printf("Failed to open file for reading\n");
+        return ESP_FAIL;
+    }
+    // Tạo một vùng nhớ đệm để lưu trữ dữ liệu từ tệp
+    char buffer[BUFFER_SIZE];
+    size_t bytes_read;
+    // Đọc dữ liệu từ tệp và lưu vào vùng nhớ đệm
+    bytes_read = fread(buffer, 1, BUFFER_SIZE, f);
+    fclose(f);
+
+    httpd_resp_send(req, buffer, HTTPD_RESP_USE_STRLEN);
+    return ESP_OK;
+}
+
+esp_err_t get_handler(httpd_req_t *req)
+{printf("\nxxx");
     FILE *f = fopen("/spiffs/settingSSID_PASS.html", "r");
     if (f == NULL) {
         printf("Failed to open file for reading\n");
@@ -95,9 +150,45 @@ esp_err_t get_handler(httpd_req_t *req)
     return ESP_OK;
 }
 
+esp_err_t control_handler(httpd_req_t *req)
+{
+    FILE *f = fopen("/spiffs/control.html", "r");
+    if (f == NULL) {
+        printf("Failed to open file for reading\n");
+        return ESP_FAIL;
+    }
+    // Tạo một vùng nhớ đệm để lưu trữ dữ liệu từ tệp
+    char buffer[BUFFER_SIZE];
+    size_t bytes_read;
+    // Đọc dữ liệu từ tệp và lưu vào vùng nhớ đệm
+    bytes_read = fread(buffer, 1, BUFFER_SIZE, f);
+    fclose(f);
+    buffer[bytes_read] = '\0';
+    // printf("%s",buffer);
+
+    // button1.style.backgroundColor = 'red';
+    for(int i = 1; i < 5; i++){
+        char id[2];
+        sprintf(id, "%d", i);
+        strcat(buffer,"button");
+        strcat(buffer,id);
+        strcat(buffer,".style.backgroundColor = ");
+        if(global.relay_status[i-1]){
+            strcat(buffer,"'greenyellow';");
+        }else{
+            strcat(buffer,"'red';");
+        }
+    }
+    strcat(buffer,"</script></body></html>");
+
+    httpd_resp_send(req, buffer, HTTPD_RESP_USE_STRLEN);
+    return ESP_OK;
+}
+
 httpd_handle_t iot_http_server_init()
 {
     httpd_config_t config = HTTPD_DEFAULT_CONFIG();
+    // config.stack_size = 2048;
     httpd_handle_t server = NULL;
     if (httpd_start(&server, &config) == ESP_OK)
     {
@@ -118,6 +209,22 @@ httpd_handle_t iot_http_server_init()
         .user_ctx = NULL};
 
     httpd_register_uri_handler(server, &post_uri);
+
+    httpd_uri_t control_uri = {
+        .uri = "/control",
+        .method = HTTP_GET,
+        .handler = control_handler,
+        .user_ctx = NULL};
+
+    httpd_register_uri_handler(server, &control_uri);
+
+    httpd_uri_t post_control_uri = {
+        .uri = "/get_control",
+        .method = HTTP_GET,
+        .handler = post_control_handler,
+        .user_ctx = NULL};
+
+    httpd_register_uri_handler(server, &post_control_uri);
 
     return server;
 }

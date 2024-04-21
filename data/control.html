@@ -1,64 +1,36 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Control Lights</title>
-</head>
-<body>
-    <h1>Control Relay</h1>
-    <div id="buttons-container">
-        <button id="button1" onclick="toggleLight(1)">Light 1: OFF</button><br>
-        <button id="button2" onclick="toggleLight(2)">Light 2: OFF</button><br>
-        <button id="button3" onclick="toggleLight(3)">Light 3: OFF</button><br>
-        <button id="button4" onclick="toggleLight(4)">Light 4: OFF</button><br>
-    </div>
-
-    <script>
-        // Mảng lưu trạng thái của từng đèn
-        var lights = [false, false, false, false];
-
-        // Hàm thay đổi trạng thái của đèn khi nhấn nút bấm
-        function toggleLight(lightNumber) {
-            var button = document.getElementById("button" + lightNumber);
-            lights[lightNumber - 1] = !lights[lightNumber - 1]; // Chuyển đổi trạng thái đèn
-            if (lights[lightNumber - 1]) {
-                button.textContent = "Relay " + lightNumber + ": ON";
-                button.style.backgroundColor = "green"; // Đèn bật có màu vàng
-            } else {
-                button.textContent = "Relay " + lightNumber + ": OFF";
-                button.style.backgroundColor = "red"; // Đèn tắt có màu đỏ
-            }
-            sendStatus();
-        }
-
-        // Ham gui trang thai qua HTTP GET
-        function sendStatus(){
-            var url = "http://http://192.168.4.1/control"
-        }
-    </script>
-
     <style>
-        /* CSS để tùy chỉnh hiển thị nút bấm */
+        /* Định dạng cho các nút bấm */
         button {
-            margin: 5px;
             padding: 10px 20px;
-            font-size: 16px;
-            background-color: red; /* Màu ban đầu là xám */
-            color: white;
+            margin: 5px;
             border: none;
             cursor: pointer;
+            border-radius: 5px;
+            color: black; /* Màu chữ trắng */
         }
-        /* Màu nút khi đèn bật */
-        button[style*="green"] {
-            background-color: green;
-        }
-        /* CSS để xếp các nút theo hàng dọc */
-        #buttons-container {
-            display: flex;
-            flex-direction: column;
-            align-items: flex-start;
-        }
-    </style>
-</body>
-</html>
+        </style>
+        </head>
+<body>
+
+<!-- Định nghĩa các nút dưới dạng biến -->
+<button id="button1" onclick="sendState(1)">Button 1</button>
+<button id="button2" onclick="sendState(2)">Button 2</button>
+<button id="button3" onclick="sendState(3)">Button 3</button>
+<button id="button4" onclick="sendState(4)">Button 4</button>
+
+<script>
+// Lưu trữ các nút trong các biến JavaScript
+var button1 = document.getElementById('button1');
+var button2 = document.getElementById('button2');
+var button3 = document.getElementById('button3');
+var button4 = document.getElementById('button4');
+
+// Hàm gửi trạng thái của nút bấm
+function sendState(buttonNumber) {
+    // Tạo một yêu cầu HTTP GET với trạng thái của nút được gửi đi
+    var xhttp = new XMLHttpRequest();
+    xhttp.open("GET", "http://192.168.4.1/get_control?button=" + buttonNumber, true);
+    xhttp.send();
+}

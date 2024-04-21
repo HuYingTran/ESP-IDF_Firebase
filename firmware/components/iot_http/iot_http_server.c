@@ -8,8 +8,26 @@
 #include "iot_spiffs.h"
 
 #define TAG "esp32_server_http"
-#define BUFFER_SIZE 1536
+
 #define MIN(a,b) ((a<b)?a:b)
+
+static void iot_http_status_relay(char* buf){
+    iot_spiffs_readfile("control.html", buf);
+    // button1.style.backgroundColor = 'red';
+    for(int i = 1; i < 5; i++){
+        char id[2];
+        sprintf(id, "%d", i);
+        strcat(buf,"button"); 
+        strcat(buf,id);
+        strcat(buf,".style.backgroundColor = ");
+        if(global.relay_status[i-1]){
+            strcat(buf,"'greenyellow';");
+        }else{
+            strcat(buf,"'red';");
+        }
+    }
+    strcat(buf,"</script></body></html>");
+}
 
 esp_err_t post_handler(httpd_req_t *req)
 {
@@ -52,17 +70,8 @@ esp_err_t post_handler(httpd_req_t *req)
         vTaskDelay(pdMS_TO_TICKS(10));
     }
 
-    FILE *f = fopen("/spiffs/settingSSID_PASS.html", "r");
-    if (f == NULL) {
-        printf("Failed to open file for reading\n");
-        return ESP_FAIL;
-    }
-    // Tạo một vùng nhớ đệm để lưu trữ dữ liệu từ tệp
     char buffer[BUFFER_SIZE];
-    size_t bytes_read;
-    // Đọc dữ liệu từ tệp và lưu vào vùng nhớ đệm
-    bytes_read = fread(buffer, 1, BUFFER_SIZE, f);
-    fclose(f);
+    iot_spiffs_readfile("settingSSID_PASS.html", buffer);
 
     if(global.wifi_sta.wifi_sta_connected){
         strcat(buffer,"<h3>WIFI Connected.</h3>");
@@ -116,70 +125,26 @@ esp_err_t post_control_handler(httpd_req_t *req)
         ESP_LOGE(TAG, "No URL query string");
     }
 
-    FILE *f = fopen("/spiffs/control.html", "r");
-    if (f == NULL) {
-        printf("Failed to open file for reading\n");
-        return ESP_FAIL;
-    }
-    // Tạo một vùng nhớ đệm để lưu trữ dữ liệu từ tệp
     char buffer[BUFFER_SIZE];
-    size_t bytes_read;
-    // Đọc dữ liệu từ tệp và lưu vào vùng nhớ đệm
-    bytes_read = fread(buffer, 1, BUFFER_SIZE, f);
-    fclose(f);
+    iot_http_status_relay(buffer);
 
     httpd_resp_send(req, buffer, HTTPD_RESP_USE_STRLEN);
     return ESP_OK;
 }
 
 esp_err_t get_handler(httpd_req_t *req)
-{printf("\nxxx");
-    FILE *f = fopen("/spiffs/settingSSID_PASS.html", "r");
-    if (f == NULL) {
-        printf("Failed to open file for reading\n");
-        return ESP_FAIL;
-    }
-    // Tạo một vùng nhớ đệm để lưu trữ dữ liệu từ tệp
+{
     char buffer[BUFFER_SIZE];
-    size_t bytes_read;
-    // Đọc dữ liệu từ tệp và lưu vào vùng nhớ đệm
-    bytes_read = fread(buffer, 1, BUFFER_SIZE, f);
-    fclose(f);
-    buffer[bytes_read] = '\0';
+    iot_spiffs_readfile("settingSSID_PASS.html", buffer);
+
     httpd_resp_send(req, buffer, HTTPD_RESP_USE_STRLEN);
     return ESP_OK;
 }
 
 esp_err_t control_handler(httpd_req_t *req)
 {
-    FILE *f = fopen("/spiffs/control.html", "r");
-    if (f == NULL) {
-        printf("Failed to open file for reading\n");
-        return ESP_FAIL;
-    }
-    // Tạo một vùng nhớ đệm để lưu trữ dữ liệu từ tệp
     char buffer[BUFFER_SIZE];
-    size_t bytes_read;
-    // Đọc dữ liệu từ tệp và lưu vào vùng nhớ đệm
-    bytes_read = fread(buffer, 1, BUFFER_SIZE, f);
-    fclose(f);
-    buffer[bytes_read] = '\0';
-    // printf("%s",buffer);
-
-    // button1.style.backgroundColor = 'red';
-    for(int i = 1; i < 5; i++){
-        char id[2];
-        sprintf(id, "%d", i);
-        strcat(buffer,"button");
-        strcat(buffer,id);
-        strcat(buffer,".style.backgroundColor = ");
-        if(global.relay_status[i-1]){
-            strcat(buffer,"'greenyellow';");
-        }else{
-            strcat(buffer,"'red';");
-        }
-    }
-    strcat(buffer,"</script></body></html>");
+    iot_http_status_relay(buffer);
 
     httpd_resp_send(req, buffer, HTTPD_RESP_USE_STRLEN);
     return ESP_OK;

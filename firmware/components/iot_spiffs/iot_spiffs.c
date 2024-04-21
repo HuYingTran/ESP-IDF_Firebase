@@ -6,6 +6,7 @@
 #include <sys/unistd.h>
 #include <sys/stat.h>
 #include <esp_http_server.h>
+#include "iot_spiffs.h"
 
 #define TAG "IOT SPIFFS"
 
@@ -45,4 +46,21 @@ esp_err_t iot_setup_spiffs()
         ESP_LOGI(TAG, "SPIFFS_check() successful");
     }
     return ret;
+}
+
+void iot_spiffs_readfile(const char* file, char *buf){
+    char path_file[32] = "/spiffs/";
+    strcat(path_file,file);
+
+    FILE *f = fopen(path_file, "r");
+    if (f == NULL) {
+        printf("Failed to open file for reading\n");
+        return;
+    }
+    // Tạo một vùng nhớ đệm để lưu trữ dữ liệu từ tệp
+    size_t bytes_read;
+    // Đọc dữ liệu từ tệp và lưu vào vùng nhớ đệm
+    bytes_read = fread(buf, 1, BUFFER_SIZE, f);
+    fclose(f);
+    buf[bytes_read] = '\0';
 }

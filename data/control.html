@@ -3,12 +3,13 @@
     <style>
         /* Định dạng cho các nút bấm */
         button {
-            padding: 10px 20px;
-            margin: 5px;
+            padding: 30px 50px;
+            margin: 20px;
             border: none;
             cursor: pointer;
-            border-radius: 5px;
+            border-radius: 10px;
             color: black; /* Màu chữ trắng */
+            font-size: 24px; /* Kích thước font */
         }
         </style>
         </head>
@@ -33,4 +34,5 @@ function sendState(buttonNumber) {
     var xhttp = new XMLHttpRequest();
     xhttp.open("GET", "http://192.168.4.1/get_control?button=" + buttonNumber, true);
     xhttp.send();
+    location.reload();
 }

@@ -23,5 +23,5 @@ void iot_http_thingspeak()
 // xTaskCreatePinnedToCore
 void iot_http_loop()
 {
-    xTaskCreatePinnedToCore(iot_http_thingspeak, "iot_http_thingspeak", 4096, &requestThingSpeak, 19, NULL, 1);
+    // xTaskCreatePinnedToCore(iot_http_thingspeak, "iot_http_thingspeak", 4096, &requestThingSpeak, 19, NULL, 1);
 }

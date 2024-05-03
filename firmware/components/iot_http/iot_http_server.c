@@ -5,6 +5,7 @@
 #include "cJson.h"
 #include "iot_nvs.h"
 #include "iot_var.h"
+#include "iot_http.h"
 #include "iot_spiffs.h"
 
 #define TAG "esp32_server_http"
@@ -86,6 +87,24 @@ esp_err_t post_handler(httpd_req_t *req)
     return ESP_OK;
 }
 
+void iot_http_send_thingspeak()
+{
+        char domain[64] = "api.thingspeak.com";
+        char path[64] = "/update";
+        char query_params[256] = "api_key=HNKTTFIYBZAK62LD";
+        strcat(query_params,"&field1=");
+        strcat(query_params,global.relay_status[0] == 0 ? "0":"1");
+        strcat(query_params,"&field2=");
+        strcat(query_params,global.relay_status[1] == 0 ? "0":"1"); 
+        strcat(query_params,"&field3=");
+        strcat(query_params,global.relay_status[2] == 0 ? "0":"1");
+        strcat(query_params,"&field4=");
+        strcat(query_params,global.relay_status[3] == 0 ? "0":"1");
+        
+        printf("\nsend ThingSpeak:");
+        iot_http_client_get(domain, path, query_params);
+}
+
 esp_err_t post_control_handler(httpd_req_t *req)
 {
     char buf[100];
@@ -124,6 +143,8 @@ esp_err_t post_control_handler(httpd_req_t *req)
     } else {
         ESP_LOGE(TAG, "No URL query string");
     }
+
+    iot_http_send_thingspeak();
 
     char buffer[BUFFER_SIZE];
     iot_http_status_relay(buffer);

@@ -5,15 +5,15 @@ cmake_minimum_required(VERSION 3.5)
 
 file(MAKE_DIRECTORY
   "C:/Espressif/frameworks/esp-idf-v4.4.5/components/bootloader/subproject"
-  "C:/Espressif/frameworks/dev/bangDienIot/firmware/build/bootloader"
-  "C:/Espressif/frameworks/dev/bangDienIot/firmware/build/bootloader-prefix"
-  "C:/Espressif/frameworks/dev/bangDienIot/firmware/build/bootloader-prefix/tmp"
-  "C:/Espressif/frameworks/dev/bangDienIot/firmware/build/bootloader-prefix/src/bootloader-stamp"
-  "C:/Espressif/frameworks/dev/bangDienIot/firmware/build/bootloader-prefix/src"
-  "C:/Espressif/frameworks/dev/bangDienIot/firmware/build/bootloader-prefix/src/bootloader-stamp"
+  "E:/bangDienIot/firmware/build/bootloader"
+  "E:/bangDienIot/firmware/build/bootloader-prefix"
+  "E:/bangDienIot/firmware/build/bootloader-prefix/tmp"
+  "E:/bangDienIot/firmware/build/bootloader-prefix/src/bootloader-stamp"
+  "E:/bangDienIot/firmware/build/bootloader-prefix/src"
+  "E:/bangDienIot/firmware/build/bootloader-prefix/src/bootloader-stamp"
 )
 
 set(configSubDirs )
 foreach(subDir IN LISTS configSubDirs)
-    file(MAKE_DIRECTORY "C:/Espressif/frameworks/dev/bangDienIot/firmware/build/bootloader-prefix/src/bootloader-stamp/${subDir}")
+    file(MAKE_DIRECTORY "E:/bangDienIot/firmware/build/bootloader-prefix/src/bootloader-stamp/${subDir}")
 endforeach()

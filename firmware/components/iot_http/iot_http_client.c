@@ -6,6 +6,7 @@
 #include "esp_system.h"
 #include "esp_http_client.h"
 #include "iot_var.h"
+#include <stdlib.h>
 
 static const char *TAG = "HTTP_CLIENT";
 
@@ -27,10 +28,11 @@ static void process_json_thingspeak(char *data){
         return;
     }
     // Access fields
-    cJSON *field1 = cJSON_GetObjectItem(root, "field1");
-    cJSON *field2 = cJSON_GetObjectItem(root, "field2");
-    cJSON *field3 = cJSON_GetObjectItem(root, "field3");
-    cJSON *field4 = cJSON_GetObjectItem(root, "field4");
+    cJSON *field1 = cJSON_GetObjectItem(root, "Relay_1");
+    cJSON *field2 = cJSON_GetObjectItem(root, "Relay_2");
+    cJSON *field3 = cJSON_GetObjectItem(root, "Relay_3");
+    cJSON *field4 = cJSON_GetObjectItem(root, "Relay_4");
+    cJSON *field5 = cJSON_GetObjectItem(root, "Value_pwm");
 
     // Extract values from fields
     if(field1->valuestring){
@@ -45,7 +47,11 @@ static void process_json_thingspeak(char *data){
     if(field4->valuestring){
         global.relay_status[3] = strcmp(field4->valuestring,"1") == 0 ? 1:0;
     }
-    printf("\nrelay %d",global.relay_status[0]);
+    global.pwm_value = atoi(field5->valuestring);
+    printf("\npwm %d",global.pwm_value);
+    for(int i=0;i<4;i++){
+        printf("\nrelay  %d",global.relay_status[i]);
+    }
 }
 
 // Xử lý các sự kiện http của client
@@ -89,7 +95,7 @@ void iot_http_get_task(void *pvParameters) {
     printf("\nurl:%s\n",url);
 
     esp_http_client_config_t config = {
-        .url = URL,
+        .url = "https://bangdieniot-default-rtdb.asia-southeast1.firebasedatabase.app/.json",
         .method = HTTP_METHOD_GET,
         .cert_pem = NULL,
         .event_handler = _http_event_handle,

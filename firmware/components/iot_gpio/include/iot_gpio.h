@@ -15,3 +15,5 @@ typedef enum {
 } iot_gpio_t;
 
 void iot_gpio_setting();
+void iot_pwm();
+void iot_gpio_pwm(int duty_cycle);

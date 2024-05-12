@@ -34,6 +34,7 @@ typedef struct
     bool wifi_change;
     iot_gpio_t IOT_GPIO_RELAY[4];
     int relay_status[4];
+    int pwm_value;
 } global_t;
 
 global_t global;

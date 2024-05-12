@@ -76,4 +76,5 @@ $<TARGET_FILE:__idf_iot_gpio>
 $<TARGET_FILE:__idf_iot_nvs>
 $<TARGET_FILE:__idf_iot_spiffs>
 $<TARGET_FILE:__idf_iot_http>
+$<TARGET_FILE:__idf_iot_realtime>
 $<TARGET_FILE:__idf_iot_wifi>

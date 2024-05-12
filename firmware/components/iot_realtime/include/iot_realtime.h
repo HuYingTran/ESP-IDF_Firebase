@@ -1,0 +1,1 @@
+void iot_sntp_init();

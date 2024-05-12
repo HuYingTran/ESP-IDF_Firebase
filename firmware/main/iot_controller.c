@@ -31,6 +31,7 @@ void iot_init()
     iot_setup_spiffs();
 
     iot_load_setting();
+    global.pwm_value = 0;
     global.wifi_change = false;
     global.wifi_sta.inited = false;
     global.wifi_sta.wifi_sta_connected = false;
@@ -40,6 +41,7 @@ void iot_init()
 
 void iot_loop()
 {
+    iot_pwm();
     iot_wifi_loop();
     iot_http_loop();
     iot_gpio_loop();

@@ -1,6 +1,7 @@
 #include <esp_http_server.h>
 #include <esp_log.h>
 #include <esp_err.h>
+#include <esp_http_client.h>
 #include "string.h"
 #include "cJson.h"
 #include "iot_nvs.h"
@@ -11,6 +12,53 @@
 #define TAG "esp32_server_http"
 
 #define MIN(a,b) ((a<b)?a:b)
+
+static esp_err_t http_event_handler(esp_http_client_event_t *evt) {
+    switch(evt->event_id) {
+        case HTTP_EVENT_ERROR:
+            printf("HTTP_EVENT_ERROR\n");
+            break;
+        default:
+            break;
+    }
+    return ESP_OK;
+}
+
+void update_data_on_firebase() {
+    esp_http_client_config_t config = {
+        .url = "https://bangdieniot-default-rtdb.asia-southeast1.firebasedatabase.app/.json?",
+        .method = HTTP_METHOD_PATCH,
+        .event_handler = http_event_handler,
+        .cert_pem = NULL,
+    };
+    esp_http_client_handle_t client = esp_http_client_init(&config);
+
+    // Đặt phương thức HTTP là PATCH và cung cấp dữ liệu
+    char body[250] = "{\"Relay_1\":\"";
+    strcat(body,global.relay_status[0]==0 ? "0":"1");
+    strcat(body,"\",\"Relay_2\":\"");
+    strcat(body,global.relay_status[1]==0 ? "0":"1");
+    strcat(body,"\",\"Relay_3\":\"");
+    strcat(body,global.relay_status[2]==0 ? "0":"1");
+    strcat(body,"\",\"Relay_4\":\"");
+    strcat(body,global.relay_status[3]==0 ? "0":"1");
+    strcat(body,"\"}");
+    printf("%s",body);
+
+    esp_http_client_set_post_field(client, body, strlen(body));
+
+    // Thực hiện request
+    esp_err_t err = esp_http_client_perform(client);
+    if (err == ESP_OK) {
+        printf("Data updated on Firebase successfully\n");
+    } else {
+        printf("Failed to update data on Firebase\n");
+    }
+
+    // Giải phóng tài nguyên
+    esp_http_client_cleanup(client);
+    vTaskDelete(NULL);
+}
 
 static void iot_http_status_relay(char* buf){
     iot_spiffs_readfile("control.html", buf);
@@ -87,23 +135,6 @@ esp_err_t post_handler(httpd_req_t *req)
     return ESP_OK;
 }
 
-void iot_http_send_thingspeak()
-{
-        char domain[64] = "api.thingspeak.com";
-        char path[64] = "/update";
-        char query_params[256] = "api_key=HNKTTFIYBZAK62LD";
-        strcat(query_params,"&field1=");
-        strcat(query_params,global.relay_status[0] == 0 ? "0":"1");
-        strcat(query_params,"&field2=");
-        strcat(query_params,global.relay_status[1] == 0 ? "0":"1"); 
-        strcat(query_params,"&field3=");
-        strcat(query_params,global.relay_status[2] == 0 ? "0":"1");
-        strcat(query_params,"&field4=");
-        strcat(query_params,global.relay_status[3] == 0 ? "0":"1");
-        
-        printf("\nsend ThingSpeak:");
-        iot_http_client_get(domain, path, query_params);
-}
 
 esp_err_t post_control_handler(httpd_req_t *req)
 {
@@ -144,7 +175,7 @@ esp_err_t post_control_handler(httpd_req_t *req)
         ESP_LOGE(TAG, "No URL query string");
     }
 
-    iot_http_send_thingspeak();
+    xTaskCreate(update_data_on_firebase, "http_patch_task", 4096, NULL, 5, NULL);
 
     char buffer[BUFFER_SIZE];
     iot_http_status_relay(buffer);

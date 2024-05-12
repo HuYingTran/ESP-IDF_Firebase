@@ -5,6 +5,7 @@
 #include "freertos/task.h"
 #include "esp_log.h"
 #include "iot_gpio.h"
+#include "iot_realtime.h"
 
 #define TAG "IOT_CONTROL_WIFI"
 

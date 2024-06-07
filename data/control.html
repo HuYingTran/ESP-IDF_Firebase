@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+    <style>
+        /* Định dạng cho các nút bấm */
+        button {
+            padding: 30px 50px;
+            margin: 20px;
+            border: none;
+            cursor: pointer;
+            border-radius: 10px;
+            color: black; /* Màu chữ trắng */
+            font-size: 24px; /* Kích thước font */
+        }
+        </style>
+        </head>
+<body>
+
+<!-- Định nghĩa các nút dưới dạng biến -->
+<button id="button1" onclick="sendState(1)">Button 1</button>
+<button id="button2" onclick="sendState(2)">Button 2</button>
+<button id="button3" onclick="sendState(3)">Button 3</button>
+<button id="button4" onclick="sendState(4)">Button 4</button>
+
+<script>
+// Lưu trữ các nút trong các biến JavaScript
+var button1 = document.getElementById('button1');
+var button2 = document.getElementById('button2');
+var button3 = document.getElementById('button3');
+var button4 = document.getElementById('button4');
+
+// Hàm gửi trạng thái của nút bấm
+function sendState(buttonNumber) {
+    // Tạo một yêu cầu HTTP GET với trạng thái của nút được gửi đi
+    var xhttp = new XMLHttpRequest();
+    xhttp.open("GET", "http://192.168.4.1/get_control?button=" + buttonNumber, true);
+    xhttp.send();
+    location.reload();
+}

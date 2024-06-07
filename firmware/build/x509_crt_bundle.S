@@ -1,4 +1,4 @@
-/* * Data converted from C:/Espressif/frameworks/dev/bangDienIot/firmware/build/esp-idf/mbedtls/x509_crt_bundle
+/* * Data converted from E:/bangDienIot/firmware/build/esp-idf/mbedtls/x509_crt_bundle
  */
 .data
 .section .rodata.embedded

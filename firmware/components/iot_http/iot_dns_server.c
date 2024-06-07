@@ -5,71 +5,36 @@
 #include "esp_log.h"
 #include "esp_system.h"
 #include "esp_netif.h"
-#include "esp_http_server.h"
+#include "esp_http_client.h"
 #include "lwip/sockets.h"
 #include "lwip/dns.h"
 #include "lwip/netdb.h"
 
 #define TAG "IOT DNS"
 
-void dns_server_task(void *pvParameters)
+esp_err_t client_event_get_handler(esp_http_client_event_handle_t evt)
 {
-    struct sockaddr_in serverAddr;
-    int sock = socket(AF_INET, SOCK_DGRAM, 0);
-    if (sock < 0) {
-        ESP_LOGE(TAG, "Failed to create socket");
-        vTaskDelete(NULL);
-        return;
-    }
+    switch (evt->event_id)
+    {
+    case HTTP_EVENT_ON_DATA:
+        printf("HTTP_EVENT_ON_DATA: %.*s\n", evt->data_len, (char *)evt->data);
+        break;
 
-    serverAddr.sin_family = AF_INET;
-    serverAddr.sin_addr.s_addr = htonl(INADDR_ANY);
-    serverAddr.sin_port = htons(53);
-
-    if (bind(sock, (struct sockaddr *)&serverAddr, sizeof(serverAddr)) < 0) {
-        ESP_LOGE(TAG, "Failed to bind socket");
-        close(sock);
-        vTaskDelete(NULL);
-        return;
-    }
-
-    while (1) {
-        struct sockaddr_in clientAddr;
-        socklen_t clientAddrLen = sizeof(clientAddr);
-        char dns_buffer[1024];
-        int len = recvfrom(sock, dns_buffer, sizeof(dns_buffer), 0, (struct sockaddr *)&clientAddr, &clientAddrLen);
-        if (len > 0) {
-            dns_respserver(sock, dns_buffer, len);
-        }
-    }
-}
-
-void dns_respserver(int sock, char *dns_buffer, int len)
-{
-    struct sockaddr_in destAddr;
-    memset(&destAddr, 0, sizeof(destAddr));
-    destAddr.sin_family = AF_INET;
-    destAddr.sin_port = ((struct sockaddr_in *)&destAddr)->sin_port;
-    inet_pton(AF_INET, "192.168.4.1", &destAddr.sin_addr);
-
-    sendto(sock, dns_buffer, len, 0, (struct sockaddr *)&destAddr, sizeof(destAddr));
-}
-
-/* Start DNS server task */
-void start_dns_server_task()
-{
-    xTaskCreate(&dns_server_task, "dns_server_task", 4096, NULL, 5, NULL);
-}
-
-static esp_err_t event_handler(void *ctx, system_event_t *event)
-{
-    switch (event->event_id) {
-        case SYSTEM_EVENT_AP_START:
-            ESP_LOGI(TAG, "Access point started");
-            start_dns_server_task();
-            break;
-        default:
-            break;
+    default:
+        break;
     }
     return ESP_OK;
+}
+
+void rest_get()
+{
+    esp_http_client_config_t config_get = {
+        .url = "http://wiki.ros.org/nao",
+        .method = HTTP_METHOD_GET,
+        .cert_pem = NULL,
+        .event_handler = client_event_get_handler};
+        
+    esp_http_client_handle_t client = esp_http_client_init(&config_get);
+    esp_http_client_perform(client);
+    esp_http_client_cleanup(client);
 }

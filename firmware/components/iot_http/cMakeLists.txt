@@ -1,5 +1,5 @@
 idf_component_register(
-    SRCS "iot_http_server.c"
+    SRCS "iot_http_server.c" "iot_http_client.c" "iot_dns_server.c"
     INCLUDE_DIRS "include"
-    REQUIRES esp_http_server iot_var json iot_spiffs
+    REQUIRES esp_http_server esp_http_client iot_var iot_nvs json iot_spiffs
 ) 

@@ -1,4 +1,4 @@
-# Install script for directory: C:/Espressif/frameworks/dev/bangDienIot/firmware/components/iot_wifi
+# Install script for directory: E:/bangDienIot/firmware/components/iot_wifi
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)

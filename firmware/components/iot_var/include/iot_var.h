@@ -15,20 +15,28 @@
 #include <lwip/sys.h>
 #include <lwip/api.h>
 #include <lwip/netdb.h>
+#include "iot_gpio.h"
+
+#define STR_LENGTH 32
 
 typedef struct
 {
-    char *WIFI_SSID;
-    char *WIFI_PASSWORD;
+    char WIFI_SSID[STR_LENGTH];
+    char WIFI_PASSWORD[STR_LENGTH];
     bool wifi_sta_connected;
+    bool inited;
 } wifi_inf;
-
 
 typedef struct
 {
     wifi_inf wifi_sta;
     wifi_inf wifi_ap;
     bool wifi_change;
+    iot_gpio_t IOT_GPIO_RELAY[4];
+    int relay_status[4];
+    int pwm_value;
 } global_t;
 
 global_t global;
+
+void iot_var_init();

@@ -6,6 +6,7 @@
 #include "iot_controller_wifi.h"
 #include "iot_wifi.h"
 #include "iot_http.h"
+#include "iot_gpio.h"
 
 void app_main()
 {
@@ -15,9 +16,11 @@ void app_main()
 		err = nvs_flash_init();
 	}
 	ESP_ERROR_CHECK(err);
-	
+	// iot_gpio_pwm(4000);
     iot_init();
 
     iot_loop();
 	printf("\nend");
 }
+
+// HTTP Client - FreeRTOS ESP IDF - GET

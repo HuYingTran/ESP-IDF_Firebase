@@ -6,10 +6,9 @@
 #include <sys/unistd.h>
 #include <sys/stat.h>
 #include <esp_http_server.h>
+#include "iot_spiffs.h"
 
 #define TAG "IOT SPIFFS"
-
-#define BUFFER_SIZE 1024
 
 esp_err_t iot_setup_spiffs()
 {
@@ -43,31 +42,25 @@ esp_err_t iot_setup_spiffs()
     ret = esp_spiffs_check(conf.partition_label);
     if (ret != ESP_OK) {
         ESP_LOGE(TAG, "SPIFFS_check() failed (%s)", esp_err_to_name(ret));
-        return;
     } else {
         ESP_LOGI(TAG, "SPIFFS_check() successful");
     }
     return ret;
 }
 
-esp_err_t get_handler(httpd_req_t *req)
-{
-    FILE *f = fopen("/spiffs/post.html", "r");
-    if (f == NULL)
-    {
+void iot_spiffs_readfile(const char* file, char *buf){
+    char path_file[32] = "/spiffs/";
+    strcat(path_file,file);
+
+    FILE *f = fopen(path_file, "r");
+    if (f == NULL) {
         printf("Failed to open file for reading\n");
         return;
     }
-
     // Tạo một vùng nhớ đệm để lưu trữ dữ liệu từ tệp
-    char buffer[BUFFER_SIZE];
     size_t bytes_read;
-
     // Đọc dữ liệu từ tệp và lưu vào vùng nhớ đệm
-    bytes_read = fread(buffer, 1, BUFFER_SIZE, f);
-    fclose(f); 
-
-    httpd_resp_send(req, buffer, HTTPD_RESP_USE_STRLEN);
-
-    return ESP_OK;
+    bytes_read = fread(buf, 1, BUFFER_SIZE, f);
+    fclose(f);
+    buf[bytes_read] = '\0';
 }
